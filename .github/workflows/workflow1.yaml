@@ -89,6 +89,14 @@ jobs:
       shell: pwsh
       run: |
         $mapping = Get-Content -Path "${{ env.mapping-file }}" -Raw | ConvertFrom-Json -AsHashTable
-        Write-Host ($mapping | ConvertTo-Json -Depth 10)
+        # Write-Host ($mapping | ConvertTo-Json -Depth 10)
         $result = $mapping["${{ inputs.configuration }}"]
-        Write-Host ($result | ConvertTo-Json -Depth 10)
+        # Write-Host ($result | ConvertTo-Json -Depth 10)
+        if ($null -eq $result) {
+          Write-Output "::error title=Unexpected Configuration::The configuration '${{ inputs.configuration }}' is not defined in the mapping file ${{ env.mapping-file}}."
+          exit 1
+        } else {
+          $resultObject = [PSCustomObject]$result
+          echo  "myname=$($resultObject.myname)"
+          
+          }
