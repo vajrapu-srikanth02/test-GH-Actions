@@ -1,17 +1,84 @@
 name: 'aks-cluster-bootstrap'
-
+run-name: 'hello-github-actionsworkflow'
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+    inputs:
+      region:
+        description: 'Region to deploy AKS cluster'
+        required: true
+        type: choice
+        default: 'eastus'
+        options:
+        - 'eastus'
+         
+      environment:
+        description: 'Target resource group'
+        required: true
+        default: 'MY_RG in Azure'
+
+      kubernetes-environment:
+        description: 'Kubernetes environment name'
+        required: true
+        type: choice
+        default: 'dev'
+        options: 
+        - 'dev'
+        - 'perf'
+
+      select-AKS:
+        description: 'Select AKS cluster'
+        required: true
+        type: choice
+        options:
+        - 'aks-cluster-1'
+        - 'aks-cluster-2'
+      
+      use_kubelogin:
+        description: 'Use kubelogin for AKS authentication'
+        required: true
+        type: boolean
+        default: true
+
+      operation:
+        description: 'Operation to perform'
+        required: true
+        type: choice
+        default: 'nothing'
+        options:
+        - 'nothing'
+        - 'deploy_image_pullsecrets_dynamic'
+      
+      secrets:
+        description: 'Secrets to use for image pull secrets'
+        required: false
+        type: choice
+        default: 'mysecret-creds'
+        options:
+        - 'mysecret-creds'
+        - 'nothing'
+
+permissions:
+  id-token: write
+  contents: read
+  packages: read
+    
+    
+
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
 
-      - name: testing
-        run: "echo ${{ vars.myname }}"
+  map:
+    runs-on: ubuntu-latest
+    env:
+      mapping-file: .github/workflows/config.jsonc
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Read mapping file
+      id: read_mapping
+      run: |
+        echo "myname=$(jq -r '.myname' ${{ env.mapping-file }})" >> $GITHUB_ENV
+        echo "myname1=$(jq -r '.myname1' ${{ env.mapping-file }})" >> $GITHUB_ENV
+        echo "myname2=$(jq -r '.myname2' ${{ env.mapping-file }})" >> $GITHUB_ENV
+
