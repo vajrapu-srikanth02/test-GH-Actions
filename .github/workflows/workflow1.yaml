@@ -89,5 +89,5 @@ jobs:
       shell: pwsh
       run: |
         $mapping = Get-Content -Path "${{ env.mapping-file }}" -Raw | ConvertFrom-Json -AsHashTable
-        echo $mapping
-        $result = $mapping | ["${{ inputs.select-AKS }}"]
+        Write-Host $mapping
+        $result = $mapping["${{ inputs.configuration }}"]
