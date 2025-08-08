@@ -89,5 +89,6 @@ jobs:
       shell: pwsh
       run: |
         $mapping = Get-Content -Path "${{ env.mapping-file }}" -Raw | ConvertFrom-Json -AsHashTable
-        Write-Host $mapping
+        Write-Host ($mapping | ConvertTo-Json -Depth 10)
         $result = $mapping["${{ inputs.configuration }}"]
+        Write-Host ($result | ConvertTo-Json -Depth 10)
