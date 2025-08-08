@@ -11,4 +11,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        run: echo ${{ env.myname }}
+        run: "echo ${{ env.myname }}"
