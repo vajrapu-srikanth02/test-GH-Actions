@@ -11,10 +11,10 @@
 
     },
     "namaste": {
-       "myname" : "srikanth" ,
-       "myname1" : "srikanth1", 
-       "myname2" : "srikanth2" ,
-       "RUNNER" : ["my-hello-runner"] 
+       "myname" : "sri" ,
+       "myname1" : "sri1", 
+       "myname2" : "sri2" ,
+       "RUNNER" : ["my-hello-dear-runner"] 
 
     }
 }
