@@ -3,6 +3,15 @@ run-name: 'hello-github-actionsworkflow'
 on:
   workflow_dispatch:
     inputs:
+      configuration:
+        description: 'Configuration file for the workflow'
+        required: true
+        type: choice
+        default: hello
+        options:
+        - hello
+        - namaste
+
       region:
         description: 'Region to deploy AKS cluster'
         required: true
@@ -77,10 +86,8 @@ jobs:
 
     - name: Read mapping file
       id: read_mapping
+      shell: pwsh
       run: |
-        myname=$(jq -r '.hello.myname' "${{ env.mapping-file }}")
-        myname1=$(jq -r '.hello.myname1' "${{ env.mapping-file }}")
-        myname2=$(jq -r '.hello.myname2' "${{ env.mapping-file }}")
-        echo "myname=$myname"
-        echo "myname1=$myname1"
-        echo "myname2=$myname2"
+        $mapping = Get-Content -Path "${{ env.mapping-file }}" -Raw | ConvertFrom-Json -AsHashTable
+        echo $mapping
+        $result = $mapping | ["${{ inputs.select-AKS }}"]

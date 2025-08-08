@@ -9,5 +9,16 @@
        "myname6" : "srikanth6" ,
        "RUNNER" : ["my-hello-runner"] 
 
+    },
+    "namaste": {
+       "myname" : "srikanth" ,
+       "myname1" : "srikanth1", 
+       "myname2" : "srikanth2" ,
+       "myname3" : "srikanth3" ,
+       "myname4" : "srikanth4" ,
+       "myname5" : "srikanth5" ,
+       "myname6" : "srikanth6" ,
+       "RUNNER" : ["my-hello-runner"] 
+
     }
 }
