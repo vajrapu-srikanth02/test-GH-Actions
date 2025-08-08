@@ -98,5 +98,5 @@ jobs:
         } else {
           $resultObject = [PSCustomObject]$result
           echo  "myname=$($resultObject.myname)"
-          
+          echo  "myname2=$($resultObject.myname2)"
           }
