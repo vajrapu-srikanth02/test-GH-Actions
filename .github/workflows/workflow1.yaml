@@ -78,9 +78,9 @@ jobs:
     - name: Read mapping file
       id: read_mapping
       run: |
-        myname=$(jq -r 'hello.myname' "${{ env.mapping-file }}")
-        myname1=$(jq -r 'hello.myname1' "${{ env.mapping-file }}")
-        myname2=$(jq -r 'hello.myname2' "${{ env.mapping-file }}")
+        myname=$(jq -r '.hello.myname' "${{ env.mapping-file }}")
+        myname1=$(jq -r '.hello.myname1' "${{ env.mapping-file }}")
+        myname2=$(jq -r '.hello.myname2' "${{ env.mapping-file }}")
         echo "myname=$myname"
         echo "myname1=$myname1"
         echo "myname2=$myname2"
