@@ -81,4 +81,5 @@ jobs:
         echo "myname=$(jq -r '.myname' ${{ env.mapping-file }})" >> $GITHUB_ENV
         echo "myname1=$(jq -r '.myname1' ${{ env.mapping-file }})" >> $GITHUB_ENV
         echo "myname2=$(jq -r '.myname2' ${{ env.mapping-file }})" >> $GITHUB_ENV
+        echo $myname $myname1 $myname2
 
