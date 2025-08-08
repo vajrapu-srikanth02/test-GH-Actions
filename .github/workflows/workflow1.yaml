@@ -84,19 +84,37 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    # - name: Read mapping file
+    #   id: read_mapping
+    #   shell: pwsh
+    #   run: |
+    #     $mapping = Get-Content -Path "${{ env.mapping-file }}" -Raw | ConvertFrom-Json -AsHashTable
+    #     # Write-Host ($mapping | ConvertTo-Json -Depth 10)
+    #     $result = $mapping["${{ inputs.configuration }}"]
+    #     # Write-Host ($result | ConvertTo-Json -Depth 10)
+    #     if ($null -eq $result) {
+    #       Write-Output "::error title=Unexpected Configuration::The configuration '${{ inputs.configuration }}' is not defined in the mapping file ${{ env.mapping-file}}."
+    #       exit 1
+    #     } else {
+    #       $resultObject = [PSCustomObject]$result
+    #       echo  "myname=$($resultObject.myname)"
+    #       echo  "myname2=$($resultObject.myname2)"
+    #       }
+
     - name: Read mapping file
       id: read_mapping
-      shell: pwsh
       run: |
-        $mapping = Get-Content -Path "${{ env.mapping-file }}" -Raw | ConvertFrom-Json -AsHashTable
-        # Write-Host ($mapping | ConvertTo-Json -Depth 10)
-        $result = $mapping["${{ inputs.configuration }}"]
-        # Write-Host ($result | ConvertTo-Json -Depth 10)
-        if ($null -eq $result) {
-          Write-Output "::error title=Unexpected Configuration::The configuration '${{ inputs.configuration }}' is not defined in the mapping file ${{ env.mapping-file}}."
-          exit 1
-        } else {
-          $resultObject = [PSCustomObject]$result
-          echo  "myname=$($resultObject.myname)"
-          echo  "myname2=$($resultObject.myname2)"
-          }
+        mapping_file="${{ env.mapping-file }}"
+        config="${{ inputs.configuration }}"
+        # Check if the mapping file exists
+        if ! jq -e ".\"$config\"" "$mapping_file" > /dev/null; then
+        echo "::error title=Unexpected Configuration::The configuration '$config' is not defined in the mapping file $mapping_file."
+        exit 1
+        fi
+
+        # Extract values
+        myname=$(jq -r ".\"$config\".myname" "$mapping_file")
+        myname2=$(jq -r ".\"$config\".myname2" "$mapping_file")
+
+        echo "myname=$myname"
+        echo "myname2=$myname2"
